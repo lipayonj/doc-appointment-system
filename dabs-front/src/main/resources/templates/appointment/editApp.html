@@ -1,0 +1,77 @@
+
+<div class="container">
+	<form method="POST" th:action="@{/appointment/add}"
+		th:object="${addAppointmentModel}">
+		<div class="form-group">
+			<label class="form-control-label">Appointment For</label>
+			<div>
+				<a href="#"
+					th:text="'Dr. ' + ${doctorSelectViewModel.firstName} + ' ' + ${doctorSelectViewModel.lastName}"></a>,
+				<span class="form-control-label"
+					th:text="${doctorSelectViewModel.settlePointName}"></span>
+			</div>
+			<input type="hidden" th:field="*{id}" />
+		</div>
+
+		<span sec:authorize="hasRole('ROLE_DOCTOR')">
+			<div class="form-group"
+				th:classappend="${#fields.hasErrors('patientId')} ? 'has-danger'">
+				<label class="form-control-label" for="patientId">For
+					Patient</label> <select th:field="*{patientId}" readonly="readonly"
+					class="form-control form-control-danger" id="patientId">
+					<option th:each="patient : ${doctorPatients}" 
+						th:value="${patient.id}"
+						th:text="${patient.firstName} + ' ' + ${patient.lastName}"></option>
+				</select>
+				<div class="form-control-feedback"
+					th:each="error : ${#fields.errors('patientId')}" th:text="${error}"></div>
+			</div>
+		</span>
+		<span sec:authorize="hasRole('ROLE_PATIENT')">
+			<input type="hidden" th:field="*{patientId}" />
+		</span>
+
+		<div class="form-group"
+			th:classappend="${#fields.hasErrors('date')} ? 'has-danger'">
+			<label class="form-control-label" for="date">Appointment
+				Date</label> <input type="date" class="form-control form-control-danger"
+				th:field="*{date}" id="date"
+				th:value="${#dates.format(addAppointmentModel.date, 'dd-MMM-yyyy')}" />
+			<div class="form-control-feedback"
+				th:each="error : ${#fields.errors('date')}" th:text="${error}"></div>
+		</div>
+
+		<div class="form-group"
+			th:classappend="${#fields.hasErrors('dateFrom')} ? 'has-danger'">
+			<label class="form-control-label" for="inputDate">Time From</label> <input
+				type="time" class="form-control form-control-danger"
+				th:field="*{dateFrom}"
+				th:value="${#dates.format(addAppointmentModel.dateFrom, 'HH:mm')}" />
+			<div class="form-control-feedback"
+				th:each="error : ${#fields.errors('dateFrom')}" th:text="${error}"></div>
+		</div>
+
+		<div class="form-group"
+			th:classappend="${#fields.hasErrors('dateTo')} ? 'has-danger'">
+			<label class="form-control-label" for="inputDate">Time To</label> <input
+				type="time" class="form-control form-control-danger"
+				th:field="*{dateTo}"
+				th:value="${#dates.format(addAppointmentModel.dateTo, 'HH:mm')}" />
+			<div class="form-control-feedback"
+				th:each="error : ${#fields.errors('dateTo')}" th:text="${error}"></div>
+		</div>
+		<div class="form-group"
+			th:classappend="${#fields.hasErrors('description')} ? 'has-danger'">
+			<label class="form-control-label" for="description">Description</label>
+			<textarea class="form-control form-control-danger" rows="3"
+				id="description" th:field="*{description}"></textarea>
+			<div class="form-control-feedback"
+				th:each="error : ${#fields.errors('description')}"
+				th:text="${error}"></div>
+		</div>
+
+		<input type="submit" class="btn btn-secondary float-right clickable"
+			value="Save" />
+	</form>
+	<br /> <br />
+</div>

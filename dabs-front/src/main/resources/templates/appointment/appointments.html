@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Appointments</title>
+    <link rel="stylesheet" href="../../static/css/commons.css"
+          th:href="@{~/css/commons.css}"/>
+</head>
+<head th:replace="fragment/parts::head">
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css" th:href="@{~/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap-table.min.css" th:href="@{~/bootstrap/css/bootstrap-table.min.css}"/>
+</head>
+<body>
+<header th:replace="fragment/parts::menu">
+</header>
+<main>
+    <div class="container">
+        <div class="table-wrapper">
+        	<div id="alert-message" class="alert alert-success"> Alert message here </div>
+			<h1 class="h1">My Appointments</h1>
+		    <div class="form-inline">
+			  <div class="form-group mb-2">
+			   <label class="form-control-label" for="filter_from">Date From</label>
+		        <input type="date" class="filter_input form-control form-control-danger" id="filter_from" name="filter_from"/>
+			  </div>
+			  <div class="form-group mx-sm-2 mb-2">
+			     <label class="form-control-label" for="filter_to">Date To</label>
+		        <input type="date" class="filter_input form-control form-control-danger" id="filter_to" name="filter_to"/>
+			  </div>
+			</div>
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th sec:authorize="hasRole('ROLE_DOCTOR')">Patient</th>
+                    <th sec:authorize="hasRole('ROLE_PATIENT')">Doctor</th>
+                    <th><button type="button" class="btn btn-primary" id="add-new-btn">Add New</button></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    <div id="modal-form" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Appointment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div id="form-alert-message" class="row alert alert-danger"> Alert message here </div>
+                <div id="modal-body">
+                </div>
+                <div id="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+</main>
+
+<div th:replace="fragment/parts::scripts"></div>
+
+<script th:src="@{~/bootstrap/js/bootstrap.min.js}" src="../../static/bootstrap/js/bootstrap.min.js"></script>
+<script th:src="@{~/bootstrap/js/bootstrap-table.min.js}" src="../../static/bootstrap/js/bootstrap-table.min.js"></script>
+
+<script th:src="@{~/js/util/requester.js}" src="../../static/js/util/requester.js"></script>
+<script th:src="@{~/js/model/appointmentModel.js}" src="../../static/js/model/appointmentModel.js"></script>
+<script th:src="@{~/js/viewBag/appointmentViewBag.js}" src="../../static/js/viewBagl/appointmentViewBag.js"></script>
+<script th:src="@{~/js/controller/appointmentController.js}" src="../../static/js/controller/appointmentController.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var app = app || {};
+
+    var appointmentRequester = appointmentRequester || app.requester.load();
+    var appointmentModel = app.appointmentModel.load(appointmentRequester);
+    var appointmentViewBag = app.appoinmentViewBag.load();
+
+    var appointmentController = app.appointmentController.load(appointmentModel, appointmentViewBag);
+    
+    $(document).ready(function () {
+    	
+    	$('#alert-message').css('visibility','hidden');
+    	$('#form-alert-message').css('visibility','hidden');
+    	
+    	$('#table').delegate('a.appView','click',function() {
+    		var id = $(this).attr('data-id');
+    		appointmentController.view(id);
+    	});
+
+    	$(document).delegate('a.appEdit','click', function(){
+    		var id = $(this).attr('data-id');
+    		appointmentController.update(id);
+    	});
+    	
+    	$(document).delegate('a.appDelete','click', function(){
+    		var id = $(this).attr('data-id');
+    		appointmentController.remove(id);
+    	});
+    	
+    	$(document).delegate('button#add-new-btn','click', function(){
+    		appointmentController.getAddNewForm();
+    	});
+    	
+    	$('input.filter_input').change(function(){
+    		appointmentViewBag.loadDataTable();
+    	});
+    	appointmentViewBag.loadDataTable();
+    });
+    
+    $(document).on("submit", "form", function(e){
+        e.preventDefault();
+        appointmentController.submitNewAppointment();
+        return  false;
+    });
+</script>
+</body>
+</html>

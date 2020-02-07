@@ -1,0 +1,45 @@
+
+<div class="container">
+    <div class="form-group">
+        <label class="form-control-label">Appointment For</label>
+        <div>
+            <a th:href="|/doctors/${appointmentViewModel.doctorSelectViewModel.id}|"
+               th:text="'Dr. ' + ${appointmentViewModel.doctorSelectViewModel.firstName} + ' ' + ${appointmentViewModel.doctorSelectViewModel.lastName}"></a>,
+            <span class="form-control-label"
+                  th:text="${appointmentViewModel.doctorSelectViewModel.settlePointName}"></span>
+        </div>
+    </div>
+
+    <div class="form-group" sec:authorize="hasRole('ROLE_DOCTOR')">
+        <label class="form-control-label">For Patient</label>
+        <div>
+            <a th:href="|/patient/${appointmentViewModel.patientBasicViewModel.id}|"
+               th:text="${appointmentViewModel.patientBasicViewModel.firstName} + ' ' + ${appointmentViewModel.patientBasicViewModel.lastName}"></a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-control-label" for="inputDate">Appointment Date</label>
+        <input type="text" class="form-control form-control-danger"  readonly="readonly"
+               th:value="${#dates.format(appointmentViewModel.date, 'dd-MMM-yyyy')}"/>
+    </div>
+    
+    <div class="form-group">
+        <label class="form-control-label" for="inputDate">Time From</label>
+        <input type="text" class="form-control form-control-danger"  readonly="readonly"
+               th:value="${#dates.format(appointmentViewModel.dateFrom, 'HH:mm')}"/>
+    </div>
+    
+    <div class="form-group">
+        <label class="form-control-label" for="inputDate">Time To</label>
+        <input type="text" class="form-control form-control-danger"  readonly="readonly"
+               th:value="${#dates.format(appointmentViewModel.dateTo, 'HH:mm')}"/>
+    </div>
+
+    <div class="form-group">
+        <label class="form-control-label" for="inputDescription">Description</label>
+        <textarea class="form-control form-control-danger" rows="3" id="inputDescription" readonly="readonly"
+                  th:field="${appointmentViewModel.description}"></textarea>
+    </div>
+    <br/>
+</div>
