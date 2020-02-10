@@ -6,13 +6,9 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.dabs.back.entity.Doctor;
-import org.dabs.back.entity.Patient;
 import org.dabs.back.validation.IsTimeFromAndToInterval;
 import org.dabs.back.validation.UpdateValidation;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @IsTimeFromAndToInterval
 public class AddAppointmentModel {
@@ -25,16 +21,10 @@ public class AddAppointmentModel {
 
 	@NotNull
 	private Long patientId;
-
-	@JsonIgnore
-	private Patient patient;
-
-	@JsonIgnore
-	private Doctor doctor;
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@FutureOrPresent(message = "Date Should be Future or Present Date")
+	@FutureOrPresent(message = "Date Should be Future Date")
 	private Date date;
 
 	@NotNull
@@ -59,22 +49,6 @@ public class AddAppointmentModel {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-
-	public Doctor getDoctor() {
-		return doctor;
-	}
-
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
 	}
 
 	public Date getDateFrom() {

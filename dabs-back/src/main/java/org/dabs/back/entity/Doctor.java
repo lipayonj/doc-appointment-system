@@ -107,15 +107,6 @@ public class Doctor implements Serializable {
         this.startPracticeDate = startPracticeDate;
     }
 
-    /*
-    public SettlePoint getSettlePoint() {
-        return settlePoint;
-    }
-
-    public void setSettlePoint(SettlePoint settlePoint) {
-        this.settlePoint = settlePoint;
-    }
-	*/
     public String getAddress() {
         return address;
     }

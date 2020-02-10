@@ -35,7 +35,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	 * @return
 	 */
 	@Query("SELECT A FROM Appointment as A WHERE A.patient.user.id = :patientId "
-			+ " AND (coalesce(:start,null) is null OR A.date >= :start) AND (coalesce(:end,null) is null OR A.date <= :end)")
+			+ " AND (coalesce(:start,null) is null OR A.date >= :start) AND (coalesce(:end,null) is null OR A.date <= :end) "
+			+ " ORDER BY A.date, A.dateFrom ")
 	List<Appointment> findAppointmentForPatientBetween(@Param("patientId") Long patientId, @Param("start") Date start,
 			@Param("end") Date end);
 
@@ -48,7 +49,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	 * @return
 	 */
 	@Query("SELECT A FROM Appointment as A WHERE A.doctor.user.id = :doctorId "
-			+ " AND (coalesce(:start,null) is null OR A.date >= :start) AND (coalesce(:end,null) is null OR A.date <= :end)")
+			+ " AND (coalesce(:start,null) is null OR A.date >= :start) AND (coalesce(:end,null) is null OR A.date <= :end) "
+			+ " ORDER BY A.date, A.dateFrom ")
 	List<Appointment> findAppointmentForDoctorBetween(@Param("doctorId") Long doctorId, @Param("start") Date start,
 			@Param("end") Date end);
 
@@ -62,14 +64,18 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
 	/**
 	 * 
-	 * @param patientId
+	 * @param doctorId
+	 * @param appId
 	 * @param date
 	 * @param from
 	 * @param to
-	 * @return
+	 * @return 0 if available 1 if not available
 	 */
-	int countByDoctorIdAndIdNotAndDateAndDateFromGreaterThanEqualAndDateToLessThanEqual(Long doctorId, 
-			Long patientId, Date date, Date from, Date to);
+	@Query("SELECT COUNT(A.id) FROM Appointment as A WHERE A.doctor.user.id = :doctorId "
+			+ " AND A.id <> :appId  AND  A.date = :date "
+			+ " AND (:from BETWEEN A.dateFrom AND A.dateTo OR :to BETWEEN A.dateFrom AND A.dateTo)")
+	int checkIfAvailableToUpdate(Long doctorId, 
+			Long appId, Date date, Date from, Date to);
 	
 	/**
 	 * 
@@ -79,5 +85,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	 * @param to
 	 * @return
 	 */
-	int countByDoctorIdAndDateAndDateFromGreaterThanEqualAndDateToLessThanEqual(Long doctorId, Date date, Date from, Date to);
+	@Query("SELECT COUNT(A.id) FROM Appointment as A "
+			+ " WHERE A.doctor.user.id = :doctorId AND A.date = :date "
+			+ " AND (:from BETWEEN A.dateFrom AND A.dateTo OR :to BETWEEN A.dateFrom AND A.dateTo)")
+	int checkIfAvailableToAdd(Long doctorId, Date date, Date from, Date to);
 }

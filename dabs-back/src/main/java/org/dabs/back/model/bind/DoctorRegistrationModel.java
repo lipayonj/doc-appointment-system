@@ -15,9 +15,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 @IsPasswordsMatching
 public class DoctorRegistrationModel implements PasswordConfirmable {
+
     @NotBlank(message = "Invalid email address")
     @Email(message = "Invalid email address")
     private String email;
@@ -30,10 +30,10 @@ public class DoctorRegistrationModel implements PasswordConfirmable {
 
     private String confirmPassword;
 
-    @Size(min = 5, message = "First name too short")
+    @NotBlank(message = "Firstname cannot be blank")
     private String firstName;
 
-    @Size(min = 5, message = "Last name too short")
+    @NotBlank(message = "Lastname cannot be blank")
     private String lastName;
 
     @BGTelephone
@@ -52,7 +52,6 @@ public class DoctorRegistrationModel implements PasswordConfirmable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Invalid start practice date")
     private Date startPracticeDate;
-
 
     @Size(max = 256, message = "Invalid address length")
     private String address;

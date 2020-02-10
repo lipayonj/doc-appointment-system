@@ -3,18 +3,20 @@ package org.dabs.back.service;
 import java.util.Date;
 import java.util.List;
 
+import org.dabs.back.entity.Appointment;
 import org.dabs.back.model.bind.AddAppointmentModel;
 import org.dabs.back.model.view.AppointmentTableModel;
 import org.dabs.back.model.view.AppointmentViewModel;
 
 public interface AppointmentService {
-    void save(AddAppointmentModel addAppointmentModel);
+	
+    Appointment save(AddAppointmentModel addAppointmentModel);
 
     AppointmentViewModel getById(long id);
 
 	AddAppointmentModel getFormDataId(long id);
 
-	void update(AddAppointmentModel addAppointmentModel);
+	int update(AddAppointmentModel addAppointmentModel);
 
 	void deleteAppointment(Long id);
 

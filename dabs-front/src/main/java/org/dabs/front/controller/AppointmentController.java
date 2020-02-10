@@ -9,7 +9,7 @@ import org.dabs.back.entity.Doctor;
 import org.dabs.back.entity.Patient;
 import org.dabs.back.entity.User;
 import org.dabs.back.exception.AppointmentNotFoundException;
-import org.dabs.back.exception.InvalidAppointmentDateException;
+import org.dabs.back.exception.InvalidAppointmentException;
 import org.dabs.back.model.bind.AddAppointmentModel;
 import org.dabs.back.model.view.AppointmentViewModel;
 import org.dabs.back.model.view.DoctorSelectViewModel;
@@ -87,7 +87,7 @@ public class AppointmentController {
 		return "error/appointment-not-found";
 	}
 
-	@ExceptionHandler(InvalidAppointmentDateException.class)
+	@ExceptionHandler(InvalidAppointmentException.class)
 	public String catchInvalidAppointment() {
 		return "error/invalid-appointment-date";
 	}

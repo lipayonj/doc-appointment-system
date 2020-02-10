@@ -8,17 +8,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.dabs.back.entity.Doctor;
-import org.dabs.back.entity.Patient;
 import org.dabs.back.entity.User;
 import org.dabs.back.exception.AppointmentNotFoundException;
-import org.dabs.back.exception.InvalidAppointmentDateException;
+import org.dabs.back.exception.InvalidAppointmentException;
 import org.dabs.back.model.bind.AddAppointmentModel;
 import org.dabs.back.model.view.AppointmentTableModel;
 import org.dabs.back.service.AppointmentService;
-import org.dabs.back.service.DoctorService;
-import org.dabs.back.service.PatientService;
-import org.dabs.back.validation.DoctorValidation;
 import org.dabs.back.validation.UpdateValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,16 +40,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppointmentRestController {
 
 	private AppointmentService appointmentService;
-	private DoctorService doctorService;
-	private PatientService patientService;
 	private SmartValidator validator;
 
 	@Autowired
-	public AppointmentRestController(AppointmentService appointmentService, DoctorService doctorService,
-			PatientService patientService, SmartValidator validator) {
+	public AppointmentRestController(AppointmentService appointmentService, SmartValidator validator) {
 		this.appointmentService = appointmentService;
-		this.doctorService = doctorService;
-		this.patientService = patientService;
 		this.validator = validator;
 	}
 
@@ -120,26 +110,9 @@ public class AppointmentRestController {
 	 */
 	private void addNewApp(AddAppointmentModel addAppointmentModel, BindingResult bindingResult,
 			Authentication principal, HttpServletRequest request) throws BindException {
-		if (request.isUserInRole("ROLE_DOCTOR")) {
-			validator.validate(addAppointmentModel, bindingResult, DoctorValidation.class);
-		}
 
 		if (bindingResult.hasErrors()) {
 			throw new BindException(bindingResult);
-		}
-
-		long userId = ((User) ((Authentication) principal).getPrincipal()).getId();
-		if (request.isUserInRole("ROLE_DOCTOR")) {
-			Doctor doctor = this.doctorService.getByUserId(userId);
-			Patient patient = this.patientService.getPatientById(addAppointmentModel.getPatientId());
-			addAppointmentModel.setPatient(patient);
-			addAppointmentModel.setDoctor(doctor);
-		} else if (request.isUserInRole("ROLE_PATIENT")) {
-			addAppointmentModel.setPatientId(userId);
-			Patient patient = this.patientService.getByUserId(userId);
-			Doctor doctor = patient.getDoctor();
-			addAppointmentModel.setPatient(patient);
-			addAppointmentModel.setDoctor(doctor);
 		}
 		appointmentService.save(addAppointmentModel);
 	}
@@ -155,15 +128,9 @@ public class AppointmentRestController {
 	private void updateApp(AddAppointmentModel addAppointmentModel, BindingResult bindingResult,
 			Authentication principal, HttpServletRequest request) throws BindException {
 		validator.validate(addAppointmentModel, bindingResult, UpdateValidation.class);
-		if (request.isUserInRole("ROLE_DOCTOR")) {
-			validator.validate(addAppointmentModel, bindingResult, DoctorValidation.class);
-		}
-
 		if (bindingResult.hasErrors()) {
 			throw new BindException(bindingResult);
 		}
-		Patient patient = this.patientService.getPatientById(addAppointmentModel.getPatientId());
-		addAppointmentModel.setPatient(patient);
 		appointmentService.update(addAppointmentModel);
 	}
 
@@ -208,7 +175,7 @@ public class AppointmentRestController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public Map<String, String> catchAppointmentNotFoundException(AppointmentNotFoundException appnf) {
 		Map<String, String> errors = new HashMap<>();
-		errors.put("message", "AppointmentId Not Found");
+		errors.put("message", "Appointment Not Found");
 		return errors;
 	}
 
@@ -216,11 +183,11 @@ public class AppointmentRestController {
 	 * 
 	 * @return
 	 */
-	@ExceptionHandler(InvalidAppointmentDateException.class)
+	@ExceptionHandler(InvalidAppointmentException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
-	public Map<String, String> invalidAppointment(InvalidAppointmentDateException inv) {
+	public Map<String, String> invalidAppointment(InvalidAppointmentException inv) {
 		Map<String, String> errors = new HashMap<>();
-		errors.put("message", "Invalid Appointment Date");
+		errors.put("message", inv.getMessage());
 		return errors;
 	}
 }

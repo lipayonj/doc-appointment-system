@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -32,10 +33,10 @@ public class PatientRegistrationModel implements PasswordConfirmable {
     @NotBlank
     private String confirmPassword;
 
-    @Size(min = 5, message = "First name too short")
+    @NotEmpty(message = "First name cannot be empty")
     private String firstName;
 
-    @Size(min = 5, message = "Last name too short")
+    @NotEmpty(message = "Last name cannot be empty")
     private String lastName;
     
     @BGTelephone
@@ -48,7 +49,7 @@ public class PatientRegistrationModel implements PasswordConfirmable {
 
     private Date dateOfEnrollment;
 
-    @NotBlank(message = "Invalid gender.")
+    @NotBlank(message = "Gender cannot be blank")
     @Pattern(regexp = "^(MALE|FEMALE)$", message = "Invalid gender.")
     private String gender;
 

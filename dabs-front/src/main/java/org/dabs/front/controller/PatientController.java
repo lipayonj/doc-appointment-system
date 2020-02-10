@@ -49,9 +49,8 @@ public class PatientController {
     @GetMapping("/doctor/patients")
     public String getDoctorPatients(Model model, @PageableDefault(size = 8) Pageable pageable, Authentication principal) {
         long userId = ((User) principal.getPrincipal()).getId();
-        Doctor doctor = this.doctorService.getByUserId(userId);
 
-        Page<PatientViewModel> patients = this.patientService.getPatientsByDoctorId(pageable, doctor.getId());
+        Page<PatientViewModel> patients = this.patientService.getPatientsByDoctorId(pageable, userId);
         model.addAttribute("patients", patients);
 
         return "patient/patients";

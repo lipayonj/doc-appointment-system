@@ -17,6 +17,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<start-class>org.dabs.WebApp</start-class>
 	</properties>
 	<dependencies>
 		<dependency>

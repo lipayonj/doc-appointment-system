@@ -1,7 +1,3 @@
-MERGE INTO roles (id, authority) KEY(id) VALUES 
-(1, 'ROLE_DOCTOR'),
-(2, 'ROLE_PATIENT');
-
 MERGE INTO users (id, email, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled, password, username) KEY(id) VALUES (1, 'jerwin@gmail.com', true, true, true, true, '$2a$10$kRsaRpNhs1rtFL9ImQZhXe9q5/xZ1zX3yjbOUilo0b0B4p75MllB.', 'jerwin@gmail.com');
 MERGE INTO users (id, email, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled, password, username) KEY(id) VALUES (2, 'l@gmail.com', true, true, true, true, '$2a$10$pRXXabRGF6sRJ8XuV48quu.xAbiB2kj2NF7x6Yjok3DBlHyggKNlC', 'l@gmail.com');
 MERGE INTO users (id, email, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_enabled, password, username) KEY(id) VALUES (3, 'oje@gmail.com', true, true, true, true, '$2a$10$Fd2pk/mYggEvqtAyPjVH1OIUO9z4UWI4.Zp/yZ1BChl/K/JY2Pgh6', 'oje@gmail.com');

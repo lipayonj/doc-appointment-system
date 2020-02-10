@@ -44,7 +44,7 @@ public class WeekScheduleServiceImpl implements WeekScheduleService {
 				dayScheduleModel.setWeekSchedule(weekSchedule);
 			} else {
 				dayScheduleModel.setDayOfWeek(dayOfWeek.toString());
-				dayScheduleModel.setStartTime(Time.valueOf("09:00:00"));
+				dayScheduleModel.setStartTime(Time.valueOf("08:00:00"));
 				dayScheduleModel.setEndTime(Time.valueOf("17:00:00"));
 				dayScheduleModel.setWeekSchedule(weekSchedule);
 			}

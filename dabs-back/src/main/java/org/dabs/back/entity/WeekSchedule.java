@@ -1,7 +1,6 @@
 package org.dabs.back.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,10 +30,6 @@ public class WeekSchedule implements Serializable {
 	@OrderBy("id")
 	private Set<DaySchedule> daySchedules;
 
-	private Date dateFrom;
-
-	private Date dateTo;
-
 	public WeekSchedule() {
 		this.setDaySchedules(new HashSet<>());
 	}
@@ -61,21 +56,5 @@ public class WeekSchedule implements Serializable {
 
 	public void setDaySchedules(Set<DaySchedule> daySchedules) {
 		this.daySchedules = daySchedules;
-	}
-
-	public Date getDateFrom() {
-		return dateFrom;
-	}
-
-	public void setDateFrom(Date dateFrom) {
-		this.dateFrom = dateFrom;
-	}
-
-	public Date getDateTo() {
-		return dateTo;
-	}
-
-	public void setDateTo(Date dateTo) {
-		this.dateTo = dateTo;
 	}
 }

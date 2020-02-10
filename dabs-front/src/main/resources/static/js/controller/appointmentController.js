@@ -79,12 +79,17 @@ app.appointmentController = function () {
 	    		_this._viewBag.reloadDataTable();
 	    		$('#alert-message').css('visibility','visible').text('New Appointment Submitted');
 	        }, function (error) {
-	        	$.each( error.responseJSON, function( key, value ) {
-	        		var $element = _this._viewBag.getFormDom().find('[name="' + key + '"]');
-	        			$element.parent().addClass('has-danger');
-	        			$('<div>').addClass('form-control-feedback')
-	        				.text(value).appendTo($element.parent());
-        		});
+	        	if(error.status == 400){
+		        	$.each( error.responseJSON, function( key, value ) {
+		        		var $element = _this._viewBag.getFormDom().find('[name="' + key + '"]');
+		        			$element.parent().addClass('has-danger');
+		        			$('<div>').addClass('form-control-feedback')
+		        				.text(value).appendTo($element.parent());
+	        		});
+	        	} else {
+	        		$('#form-alert-message').text(error.responseJSON.message)
+	        		$('#form-alert-message').css('visibility','visible');
+	        	}
 	        });
     };
     
@@ -98,6 +103,8 @@ app.appointmentController = function () {
 	    		$('#alert-message').css('visibility','visible').text('Appointment Delete');
 	        }, function (error) {
 	        	console.log(error);
+	        	$('#form-alert-message').text(error.responseJSON.message)
+        		$('#form-alert-message').css('visibility','visible');
 	        });
     };
     

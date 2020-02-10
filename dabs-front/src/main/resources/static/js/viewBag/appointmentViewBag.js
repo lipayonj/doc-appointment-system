@@ -22,6 +22,7 @@ app.appoinmentViewBag = (function () {
     }
 
     function clearContent() {
+    	$('#form-alert-message').css('visibility','hidden');
     	getForm().html('');
     }
 
@@ -32,7 +33,6 @@ app.appoinmentViewBag = (function () {
     function reloadDataTable(){
     	$('#table').bootstrapTable('refresh');
     }
-    
 
     function loadDataTable(){
         var table_params = $('#table').bootstrapTable({
