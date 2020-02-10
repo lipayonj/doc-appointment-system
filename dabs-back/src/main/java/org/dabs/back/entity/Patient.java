@@ -14,9 +14,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.EqualsAndHashCode;
+
 
 @Entity
 @Table(name = "patients")
+@EqualsAndHashCode
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = 6103485460818450985L;

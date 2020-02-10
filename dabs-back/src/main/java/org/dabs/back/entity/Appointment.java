@@ -14,8 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.EqualsAndHashCode;
+
 @Entity
 @Table(name = "appointments")
+@EqualsAndHashCode
 public class Appointment implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -13,8 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.EqualsAndHashCode;
+
 @Entity
 @Table(name = "day_schedules")
+@EqualsAndHashCode
 public class DaySchedule implements Serializable {
 
 	private static final long serialVersionUID = -7459668792725221451L;
