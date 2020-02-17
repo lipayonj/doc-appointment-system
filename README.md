@@ -1,8 +1,4 @@
 # doc-appointment-system
- 
-CityMunch Technical Assessment
-
-Introduction : The technical assessment is designed to assess the potential developers’ technical knowledge on how to design and code a fully working system. 
 
 Technical Requirements:
 ●Create a full stack application that will allow users to book doctors’ appointments
